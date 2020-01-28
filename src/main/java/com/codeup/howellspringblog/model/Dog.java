@@ -1,4 +1,4 @@
-package model;
+package com.codeup.howellspringblog.model;
 
 import javax.persistence.*;
 
@@ -8,6 +8,7 @@ public class Dog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private long id;
 
     @Column(nullable = false, length = 20)
@@ -16,7 +17,7 @@ public class Dog {
     @Column(nullable = false, length = 36)
     private String name;
 
-    @Column(nullable = false, length = 2)
+    @Column(name="reside_state", nullable = false, length = 2)
     private String resideState;
 
     Dog(){};

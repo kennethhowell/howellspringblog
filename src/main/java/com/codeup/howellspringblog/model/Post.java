@@ -1,4 +1,4 @@
-package model;
+package com.codeup.howellspringblog.model;
 
 
 public class Post {
