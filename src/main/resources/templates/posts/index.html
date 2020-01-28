@@ -6,7 +6,12 @@
 </head>
 <body>
 
-<h1>hello there</h1>
+<h1>hello there! here's my posts</h1>
+
+<div th:each="post : ${demoMultiplePosts}">
+    <h1 th:text="${post.title}"></h1>
+    <p th:text="${post.body}"></p>
+</div>
 
 </body>
 </html>

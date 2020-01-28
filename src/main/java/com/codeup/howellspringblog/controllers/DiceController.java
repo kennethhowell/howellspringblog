@@ -10,6 +10,7 @@ public class DiceController {
 
     @GetMapping("/roll-dice")
     public String showDiceForm(Model model){
+
         return "dicemustflow";
     }
 

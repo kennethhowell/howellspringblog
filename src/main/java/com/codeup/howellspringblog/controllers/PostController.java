@@ -8,12 +8,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+
 @Controller
 public class PostController {
 
     @GetMapping("/posts")
-    public String postsPage(){
+    public String postsPage(Model model){
+        ArrayList<Post> demoMultiplePosts = new ArrayList<>();
 
+        Post testpost1 = new Post("I love fish", "That's why for capstone I'm doing an urban fishing project!");
+        Post testpost2 = new Post("Looking at my urban fishing project", "Using a raspberry pi, I'm going to build a robotic fish!");
+        demoMultiplePosts.add(testpost1);
+        demoMultiplePosts.add(testpost2);
+
+        model.addAttribute("demoMultiplePosts", demoMultiplePosts);
         return "posts/index";
     }
 
