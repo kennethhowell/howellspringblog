@@ -21,7 +21,9 @@ public class Post {
     @OneToOne(mappedBy = "post")
     private PostDetails postdetails;
 
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Post(){};
 
