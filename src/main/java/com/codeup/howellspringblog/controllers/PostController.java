@@ -1,36 +1,35 @@
 package com.codeup.howellspringblog.controllers;
 
 import com.codeup.howellspringblog.model.Post;
+import com.codeup.howellspringblog.model.PostRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
 @Controller
 public class PostController {
 
+    private final PostRepository postDao;
+
+    public PostController(PostRepository postDao){
+        this.postDao = postDao;
+    }
+
     @GetMapping("/posts")
     public String postsPage(Model model){
-        ArrayList<Post> demoMultiplePosts = new ArrayList<>();
 
-        Post testpost1 = new Post("I love fish", "That's why for capstone I'm doing an urban fishing project!");
-        Post testpost2 = new Post("Looking at my urban fishing project", "Using a raspberry pi, I'm going to build a robotic fish!");
-        demoMultiplePosts.add(testpost1);
-        demoMultiplePosts.add(testpost2);
 
-        model.addAttribute("demoMultiplePosts", demoMultiplePosts);
+        model.addAttribute("demoMultiplePosts", postDao.findAll());
         return "posts/index";
     }
 
     @GetMapping("/posts/{id}")
-    public String postsID(@PathVariable String id, Model model){
-        Post testsinglePost = new Post("Test title", "Your body is a wonderland!");
+    public String postsID(@PathVariable long id, Model model){
 
 
-        model.addAttribute("post", testsinglePost);
+        model.addAttribute("post", postDao.getOne(id));
         return "posts/show";
     }
 
@@ -39,6 +38,28 @@ public class PostController {
     @ResponseBody
     public String createPost(){
         return "Will hold the area to create a new post and listen for the forms POST request!";
+    }
+
+    @GetMapping("/posts/edit/{id}")
+    public String editPost(@PathVariable long id, Model model){
+
+        model.addAttribute("post", postDao.getOne(id));
+        return "edit";
+    }
+
+    @PostMapping("/posts/edit")
+    public String postEdit(@RequestParam(name = "id") long id, @RequestParam(name = "title") String title, @RequestParam(name="body") String body, Model model){
+        Post updatePost = new Post (id, title, body);
+        postDao.save(updatePost);
+        model.addAttribute("post", postDao.getOne(id));
+        return "/posts/show";
+    }
+
+    @PostMapping("/posts/delete")
+    public String postDelete(@RequestParam(name = "id") long id, Model model){
+        postDao.deleteById(id);
+        model.addAttribute("demoMultiplePosts", postDao.findAll());
+        return "/posts/index";
     }
 //    @PostMapping("/posts/create")
 }
