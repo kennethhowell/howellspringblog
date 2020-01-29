@@ -8,7 +8,9 @@
 </head>
 <body>
 
-<form action="/posts/edit" method="post">
+<h1>edit page</h1>
+
+<form th:action="@{/posts/edit}" th:method="post">
     <input type="hidden" name="id" id="id" th:value="${post.getId()}">
     <h4>Edit Title:</h4>
     <input type="text" name="title" id="title" size="55" th:value="${post.getTitle()}">

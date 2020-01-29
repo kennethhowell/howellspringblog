@@ -6,8 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-
 @Controller
 public class PostController {
 
@@ -25,7 +23,7 @@ public class PostController {
         return "posts/index";
     }
 
-    @GetMapping("/posts/{id}")
+    @PostMapping("/posts/{id}")
     public String postsID(@PathVariable long id, Model model){
 
 
@@ -40,11 +38,10 @@ public class PostController {
         return "Will hold the area to create a new post and listen for the forms POST request!";
     }
 
-    @GetMapping("/posts/edit/{id}")
+    @PostMapping("/posts/edit/{id}")
     public String editPost(@PathVariable long id, Model model){
-
         model.addAttribute("post", postDao.getOne(id));
-        return "edit";
+        return "posts/edit";
     }
 
     @PostMapping("/posts/edit")
@@ -52,14 +49,14 @@ public class PostController {
         Post updatePost = new Post (id, title, body);
         postDao.save(updatePost);
         model.addAttribute("post", postDao.getOne(id));
-        return "/posts/show";
+        return "redirect:/posts";
     }
 
     @PostMapping("/posts/delete")
-    public String postDelete(@RequestParam(name = "id") long id, Model model){
-        postDao.deleteById(id);
-        model.addAttribute("demoMultiplePosts", postDao.findAll());
-        return "/posts/index";
+    public String postDelete(@RequestParam(name = "id") String id, Model model){
+        long postID = Long.parseLong(id);
+        postDao.deleteById(postID);
+        return "redirect:/posts";
     }
 //    @PostMapping("/posts/create")
 }
