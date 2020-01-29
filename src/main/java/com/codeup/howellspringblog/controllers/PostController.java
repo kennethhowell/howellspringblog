@@ -1,6 +1,7 @@
 package com.codeup.howellspringblog.controllers;
 
 import com.codeup.howellspringblog.model.Post;
+import com.codeup.howellspringblog.model.PostDetails;
 import com.codeup.howellspringblog.model.PostRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +27,8 @@ public class PostController {
     @PostMapping("/posts/{id}")
     public String postsID(@PathVariable long id, Model model){
 
-
+        PostDetails postdetails = postDao.getOne(id).getPostdetails();
+        model.addAttribute("postdetails", postdetails);
         model.addAttribute("post", postDao.getOne(id));
         return "posts/show";
     }
@@ -58,5 +60,16 @@ public class PostController {
         postDao.deleteById(postID);
         return "redirect:/posts";
     }
+
+//    @GetMapping("/posts/postdetails/{id}")
+//    public String postDetails(@PathVariable long id, Model model){
+//
+//        PostDetails postdetails = postDao.getOne(id).getPostdetails();
+//        model.addAttribute("postdetails", postdetails);
+//
+//        return "posts/postdetails";
+//    }
+
+
 //    @PostMapping("/posts/create")
 }

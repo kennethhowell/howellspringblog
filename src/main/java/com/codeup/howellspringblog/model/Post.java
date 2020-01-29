@@ -18,6 +18,11 @@ public class Post {
     @Column(nullable = false, length = 800)
     private String body;
 
+    @OneToOne(mappedBy = "post")
+    private PostDetails postdetails;
+
+
+
     public Post(){};
 
 
@@ -58,4 +63,11 @@ public class Post {
         this.id = id;
     }
 
+    public PostDetails getPostdetails() {
+        return postdetails;
+    }
+
+    public void setPostdetails(PostDetails postdetails) {
+        this.postdetails = postdetails;
+    }
 }
