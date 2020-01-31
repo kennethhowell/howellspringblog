@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Create a New Post</h1>
+<form th:action="@{/posts/create}" th:method="post" th:object="${post}">
+    Title:
+    <input th:field="*{title}" />
+    <br />
+    Body:
+    <input th:field="*{body}" />
+    <br />
+    <div th:object="${postDetails}">
+        Add some details about your post:
+        <br>Is this post awesome?
+        <select class="form-control" th:field="*{awesome}">
+            <option th:value="1" >true</option>
+            <option th:value="0" >false</option>
+        </select>
+        <br>
+        <input th:field="*{historyOfPost}" placeholder="History of post"/>
+        <br>
+        <input th:field="*{topicDescription}" placeholder="Description of post"/>
+        <br>
+    </div>
+    <input type="submit" />
+</form>
+
+
+</body>
+</html>

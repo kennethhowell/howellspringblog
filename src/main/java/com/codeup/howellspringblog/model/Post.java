@@ -19,7 +19,7 @@ public class Post {
     @Column(nullable = false, length = 800)
     private String body;
 
-    @OneToOne(mappedBy = "post")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "post")
     private PostDetails postdetails;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")

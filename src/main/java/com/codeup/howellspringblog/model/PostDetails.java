@@ -31,6 +31,14 @@ public class PostDetails {
         this.post = post;
     }
 
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
     @OneToOne
     private Post post;
 

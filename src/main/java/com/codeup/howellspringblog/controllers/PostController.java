@@ -2,11 +2,11 @@ package com.codeup.howellspringblog.controllers;
 
 import com.codeup.howellspringblog.model.*;
 
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.codeup.howellspringblog.repositories.PostRepository;
+import com.codeup.howellspringblog.repositories.UserRepository;
 
 @Controller
 public class PostController {
@@ -18,6 +18,7 @@ public class PostController {
         this.postDao = postDao;
         this.userDao = userDao;
     }
+
 
     @GetMapping("/posts")
     public String postsPage(Model model){
@@ -34,13 +35,6 @@ public class PostController {
         return "posts/show";
     }
 
-
-    @GetMapping("/posts/create")
-    @ResponseBody
-    public String createPost(){
-        return "Will hold the area to create a new post and listen for the forms POST request!";
-    }
-
     @PostMapping("/posts/edit/{id}")
     public String editPost(@PathVariable long id, Model model){
         model.addAttribute("post", postDao.getOne(id));
@@ -50,6 +44,7 @@ public class PostController {
     @PostMapping("/posts/edit")
     public String postEdit(@RequestParam(name = "id") long id, @RequestParam(name = "title") String title, @RequestParam(name="body") String body, Model model){
         Post updatePost = new Post (id, title, body);
+        updatePost.setUser(userDao.getOne(1L));
         postDao.save(updatePost);
         model.addAttribute("post", postDao.getOne(id));
         return "redirect:/posts";
@@ -62,6 +57,22 @@ public class PostController {
         return "redirect:/posts";
     }
 
+    @GetMapping("/posts/create")
+    public String createPost(Model model){
+        model.addAttribute("post", new Post());
+        model.addAttribute("postDetails", new PostDetails());
+        return "posts/create";
+    }
 
-//    @PostMapping("/posts/create")
+    @PostMapping("/posts/create")
+    public String createPost(@ModelAttribute Post post, @ModelAttribute PostDetails postDetails){
+       User user = userDao.getOne(1L);
+       postDetails.setPost(post);
+       post.setUser(user);
+       post.setPostdetails(postDetails);
+       postDao.save(post);
+       return "redirect:/posts";
+
+
+    }
 }
