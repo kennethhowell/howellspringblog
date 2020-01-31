@@ -20,6 +20,17 @@ public class PostDetails {
     @Column(nullable = false, length = 255)
     private String topicDescription;
 
+   public PostDetails(){
+
+    }
+
+    public PostDetails(boolean isAwesome, String historyOfPost, String topicDescription, Post post) {
+        this.isAwesome = isAwesome;
+        this.historyOfPost = historyOfPost;
+        this.topicDescription = topicDescription;
+        this.post = post;
+    }
+
     @OneToOne
     private Post post;
 

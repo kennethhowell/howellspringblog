@@ -8,15 +8,23 @@
 <h1>this is one post</h1>
 <h1 th:text="${post.title}"></h1>
 <p th:text="${post.body}"></p>
+<p>Written by <span th:text="${post.getUser().getEmail()}"}></span></p>
+<div th:each="image : ${post.postImageList}">
+    <img th:width="400px" th:height="400px" th:src="${image.url}"/>
+</div>
 <h1>post's details</h1>
-<p th:text="${postdetails.getHistoryOfPost()}"></p>
-<p>Is it awesome? <span th:text="${postdetails.isAwesome()}"></span></p>
+<p th:text="${post.postdetails.getHistoryOfPost()}"></p>
+<p>Is it awesome? <span th:text="${post.postdetails.isAwesome()}"></span></p>
 <br>
-<p>Post's covered topics: <span th:text="${postdetails.getTopicDescription()}"></span></p>
+<p>Post's covered topics: <span th:text="${post.postdetails.getTopicDescription()}"></span></p>
+
+
 
 <form name="returnIndex" id="returnIndex" th:action="@{/posts}" th:method="get">
     <button type="submit">Return To All Posts</button>
 </form>
+
+
 
 </body>
 </html>

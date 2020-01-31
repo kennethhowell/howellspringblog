@@ -1,6 +1,7 @@
 package com.codeup.howellspringblog.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="posts")
@@ -21,6 +22,9 @@ public class Post {
     @OneToOne(mappedBy = "post")
     private PostDetails postdetails;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    private List<PostImage> postImageList;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -40,6 +44,11 @@ public class Post {
         this.body = body;
     }
 
+    public Post(String title, String body, User user) {
+        this.title = title;
+        this.body = body;
+        this.user = user;
+    }
 
     public String getTitle() {
         return title;
@@ -72,4 +81,21 @@ public class Post {
     public void setPostdetails(PostDetails postdetails) {
         this.postdetails = postdetails;
     }
+
+    public List<PostImage> getPostImageList() {
+        return postImageList;
+    }
+
+    public void setPostImageList(List<PostImage> postImageList) {
+        this.postImageList = postImageList;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
+

@@ -24,7 +24,7 @@
     </form>
 
     <form name="viewPost" id="viewPost" th:action="@{/posts/{id}(id=${post.id})}" th:method="post">
-        <input type="hidden" name="editID" id="editID" th:value="${post.getId()}"/>
+        <input type="hidden" name="viewID" id="viewID" th:value="${post.getId()}"/>
         <button type="submit">View Details</button>
     </form>
 
