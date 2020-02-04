@@ -20,6 +20,9 @@ public class PostDetails {
     @Column(nullable = false, length = 255)
     private String topicDescription;
 
+    @OneToOne
+    private Post post;
+
    public PostDetails(){
 
     }
@@ -39,8 +42,7 @@ public class PostDetails {
         this.post = post;
     }
 
-    @OneToOne
-    private Post post;
+
 
     public long getId() {
         return id;

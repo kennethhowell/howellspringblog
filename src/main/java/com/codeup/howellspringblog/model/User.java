@@ -12,13 +12,13 @@ public class User {
     @Column(nullable = false)
     private long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -40,6 +40,13 @@ public class User {
         this.email = email;
     }
 
+    public User(User copy) {
+        id = copy.id;
+        email = copy.email;
+        username = copy.username;
+        password = copy.password;
+    }
+
 
     public long getId() {
         return id;
@@ -47,6 +54,14 @@ public class User {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     public String getUsername() {

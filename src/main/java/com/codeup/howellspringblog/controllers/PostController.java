@@ -2,21 +2,32 @@ package com.codeup.howellspringblog.controllers;
 
 import com.codeup.howellspringblog.model.*;
 
+import com.codeup.howellspringblog.repositories.PostDetailsRepository;
+import com.codeup.howellspringblog.services.EmailService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.codeup.howellspringblog.repositories.PostRepository;
 import com.codeup.howellspringblog.repositories.UserRepository;
 
+
 @Controller
 public class PostController {
 
+
     private final PostRepository postDao;
     private final UserRepository userDao;
+    private final EmailService emailService;
+    private final PostDetailsRepository PostDetailsDao;
 
-    public PostController(PostRepository postDao, UserRepository userDao){
+
+
+    public PostController(PostRepository postDao, UserRepository userDao, EmailService emailService, PostDetailsRepository PostDetailsDao){
         this.postDao = postDao;
         this.userDao = userDao;
+        this.emailService = emailService;
+        this.PostDetailsDao = PostDetailsDao;
     }
 
 
@@ -44,7 +55,8 @@ public class PostController {
     @PostMapping("/posts/edit")
     public String postEdit(@RequestParam(name = "id") long id, @RequestParam(name = "title") String title, @RequestParam(name="body") String body, Model model){
         Post updatePost = new Post (id, title, body);
-        updatePost.setUser(userDao.getOne(1L));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        updatePost.setUser(userDao.getOne(user.getId()));
         postDao.save(updatePost);
         model.addAttribute("post", postDao.getOne(id));
         return "redirect:/posts";
@@ -66,11 +78,11 @@ public class PostController {
 
     @PostMapping("/posts/create")
     public String createPost(@ModelAttribute Post post, @ModelAttribute PostDetails postDetails){
-       User user = userDao.getOne(1L);
-       postDetails.setPost(post);
-       post.setUser(user);
-       post.setPostdetails(postDetails);
-       postDao.save(post);
+        postDetails.setPost(post);
+        post.setUser((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        postDao.save(post);
+        PostDetailsDao.save(postDetails);
+        emailService.prepareAndSend(post,"New post written", "Good job, keep writing!");
        return "redirect:/posts";
 
 
